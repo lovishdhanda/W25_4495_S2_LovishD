@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'
 
+
+//error handling
 export default function SignIn() {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
