@@ -9,7 +9,7 @@ export default function SignIn() {
   const handleChange = (e) => {
     setFormData (
       {
-        ...formData, //spread operator to keep the data
+        ...formData, //spread operator to keep data..
         [e.target.id]: e.target.value,
       });
   }
