@@ -1,23 +1,28 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     username: {
-        type: String,
-        required: true,
-        unique: true, //#everybody should have a different username
+      type: String,
+      required: true,
+      unique: true,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true,
+      type: String,
+      required: true,
+      unique: true,
     },
     password: {
-        type: String,
-        required: true,
-        unique: false, //2 users can have same password
+      type: String,
+      required: true,
     },
-},  {timestamps: true}
-)
+    avatar:{
+      type: String,
+      default: "https://i.fbcd.co/products/resized/resized-750-500/s211206-kids-avatar-e06-mainpreview-4f1ac0a6471e5aa7987daa8ec493a3282b88618b2ab75bb48f827c0dfaece619.jpg"
+    },
+  },
+  { timestamps: true }
+);
 
 const User = mongoose.model('User', userSchema);
 
