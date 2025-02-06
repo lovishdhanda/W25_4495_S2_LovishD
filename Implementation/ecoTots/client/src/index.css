@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-body{
+/* body{
     background-color: rgb(244, 245, 240);
-}
+} */
+
+body {
+    background-color: rgb(250, 250, 250); /* A soft light gray background */
+  }
