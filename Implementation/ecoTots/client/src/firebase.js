@@ -10,9 +10,8 @@ const firebaseConfig = {
   projectId: "ecototsmern-66b2a",
   storageBucket: "ecototsmern-66b2a.firebasestorage.app",
   messagingSenderId: "251033137769",
-  appId: "1:251033137769:web:4d99de31b90d8b0243a8f8"
+  appId: "1:251033137769:web:4d99de31b90d8b0243a8f8",
 };
-
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
