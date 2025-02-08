@@ -3,7 +3,7 @@ import userReducer from './user/userSlice';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-const rootReducer = combineReducers({ user: userReducer });
+const rootReducer = combineReducers({ user: userReducer }); // coming from redux js toolkiit
 
 const persistConfig = {
   key: 'root',
@@ -13,6 +13,7 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+//preventing error in the browser
 export const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
@@ -20,4 +21,5 @@ export const store = configureStore({
         serializableCheck: false,
       }),
   });
-  export const persistor = persistStore(store);
+  export const persistor = persistStore(store); //for keeping the current user 
+  //inspect/application/localstorage: user is saved inthe local storage
