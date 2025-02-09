@@ -11,6 +11,16 @@ export default function CreateListing() {
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
     imageUrls: [],
+    name: '',
+    description: '',
+    category: '',
+    size: '',
+    gender: '',
+    price: 1,
+    discountedPrice: 1,
+    brand: '',
+    material: '',
+    condition: '',
   });
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -85,6 +95,30 @@ export default function CreateListing() {
     }));
   };
 
+  const handleChange = (e) => {
+
+    if (e.target.id === 'gender'){
+      setFormData({
+        ...formData,
+        gender: e.target.value,
+      });
+    }
+
+    if (e.target.id === 'condition'){
+      setFormData({
+        ...formData,
+        condition: e.target.value,
+      });
+    }
+
+    if (e.target.type === 'number' || e.target.type === 'text' || e.target.type === 'textarea'){
+      setFormData({
+        ...formData,
+        [e.target.id]: e.target.value,
+      })
+    }
+  };
+
   return (
     <main className="p-6 max-w-3xl mx-auto bg-gradient-to-r from-pink-100 to-blue-100 shadow-lg rounded-lg">
       <h1 className="text-4xl font-bold text-center my-6 text-pink-700">
@@ -100,6 +134,8 @@ export default function CreateListing() {
           maxLength="62"
           minLength="10"
           required
+          onChange={handleChange}
+          value={formData.name}
         />
 
         {/* Description */}
@@ -108,6 +144,8 @@ export default function CreateListing() {
           className="border p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400"
           id="description"
           required
+          onChange={handleChange}
+          value={formData.description}
         />
 
         {/* Category & Size */}
@@ -118,6 +156,8 @@ export default function CreateListing() {
             className="border p-3 rounded-lg flex-1 shadow-sm focus:ring-2 focus:ring-pink-400"
             id="category"
             required
+            onChange={handleChange}
+          value={formData.category}
           />
           <input
             type="text"
@@ -125,6 +165,8 @@ export default function CreateListing() {
             className="border p-3 rounded-lg flex-1 shadow-sm focus:ring-2 focus:ring-blue-400"
             id="size"
             required
+            onChange={handleChange}
+          value={formData.size}
           />
         </div>
 
@@ -133,6 +175,8 @@ export default function CreateListing() {
           className="border p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-pink-400"
           id="gender"
           required
+          value={formData.gender}
+          onChange={handleChange}
         >
           <option value="">Select Gender</option>
           <option value="Boys">Boys</option>
@@ -142,18 +186,24 @@ export default function CreateListing() {
 
         {/* Price & Discounted Price */}
         <div className="flex flex-col sm:flex-row gap-4">
+          <label>Price ($)</label>
           <input
             type="number"
             placeholder="Price ($)"
             className="border p-3 rounded-lg flex-1 shadow-sm focus:ring-2 focus:ring-blue-400"
             id="price"
             required
+            onChange={handleChange}
+            value={formData.price}
           />
+          <label>Discounted Price ($)</label>
           <input
             type="number"
             placeholder="Discounted Price ($)"
             className="border p-3 rounded-lg flex-1 shadow-sm focus:ring-2 focus:ring-pink-400"
             id="discountedPrice"
+            onChange={handleChange}
+            value={formData.discountedPrice}
           />
         </div>
 
@@ -164,12 +214,16 @@ export default function CreateListing() {
             placeholder="Brand (Optional)"
             className="border p-3 rounded-lg flex-1 shadow-sm focus:ring-2 focus:ring-blue-400"
             id="brand"
+            onChange={handleChange}
+            value={formData.brand}
           />
           <input
             type="text"
             placeholder="Material (Cotton, Wool, etc.)"
             className="border p-3 rounded-lg flex-1 shadow-sm focus:ring-2 focus:ring-pink-400"
             id="material"
+            onChange={handleChange}
+            value={formData.material}
           />
         </div>
 
@@ -178,6 +232,8 @@ export default function CreateListing() {
           className="border p-3 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400"
           id="condition"
           required
+          value={formData.condition}
+          onChange={handleChange}
         >
           <option value="">Select Condition</option>
           <option value="New">New</option>
