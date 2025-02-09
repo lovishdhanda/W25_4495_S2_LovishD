@@ -6,8 +6,12 @@ import {
   ref,
 } from "firebase/storage";
 import { app } from "../firebase";
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export default function CreateListing() {
+  const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
     imageUrls: [],
@@ -24,6 +28,8 @@ export default function CreateListing() {
   });
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   //console.log(files);
   console.log(formData);
 
@@ -111,20 +117,56 @@ export default function CreateListing() {
       });
     }
 
-    if (e.target.type === 'number' || e.target.type === 'text' || e.target.type === 'textarea'){
+    if (
+      e.target.type === 'number' ||
+      e.target.type === 'text' ||
+      e.target.type === 'textarea'
+    ) {
       setFormData({
         ...formData,
         [e.target.id]: e.target.value,
-      })
+      });
     }
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try{
+      if (formData.imageUrls.length < 1)
+        return setError('You must upload at least one image');
+      if (+formData.price < +formData.discountedPrice)
+        return setError('Discount price must be lower than regular price');
+      setLoading(true);
+      setError(false);
+      const res = await fetch('/api/listing/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          userRef: currentUser._id,
+        }),
+      });
+      const data = await res.json();
+      setLoading(false);
+      if (data.success === false){
+        setError(data.message);
+      }
+      navigate(`/listing/${data._id}`);
+
+    } catch (error) {
+      setError(error.message);
+      setLoading(false);
+    }
+  }
 
   return (
     <main className="p-6 max-w-3xl mx-auto bg-gradient-to-r from-pink-100 to-blue-100 shadow-lg rounded-lg">
       <h1 className="text-4xl font-bold text-center my-6 text-pink-700">
         Sell Your Kids' Clothing
       </h1>
-      <form className="flex flex-col gap-6">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         {/* Name */}
         <input
           type="text"
@@ -300,12 +342,13 @@ export default function CreateListing() {
         </div>
 
         {/* Submit Button */}
-        <button
+        <button disabled={ loading || uploading}
           type="submit"
           className="bg-gradient-to-r from-pink-400 to-yellow-300 text-white py-3 rounded-lg font-semibold hover:from-pink-500 hover:to-yellow-400 shadow-md transition duration-300"
         >
-          List Clothing for Sale
+          {loading ? 'Creating...' : 'Create Listing'}
         </button>
+        {error && <p className="text-red-700 text-sm">{error}</p>}
       </form>
     </main>
   );
