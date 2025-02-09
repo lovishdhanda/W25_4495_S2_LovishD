@@ -45,14 +45,13 @@ const listingSchema = new mongoose.Schema(
             type: Array,
             required: true,
         },
-        sellerRef: {
+        userRef: {
             type: String,
             required: true,
         },
     },
     { timestamps: true }
-)
-
+);
 
 const Listing = mongoose.model('Listing', listingSchema);
 
