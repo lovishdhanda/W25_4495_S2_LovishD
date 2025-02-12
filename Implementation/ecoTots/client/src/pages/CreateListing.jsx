@@ -20,8 +20,8 @@ export default function CreateListing() {
     category: '',
     size: '',
     gender: '',
-    price: 1,
-    discountedPrice: 1,
+    price: 50,
+    discountedPrice: 50,
     brand: '',
     material: '',
     condition: '',
@@ -101,12 +101,13 @@ export default function CreateListing() {
     }));
   };
 
+  //fetching the inputs
   const handleChange = (e) => {
 
     if (e.target.id === 'gender'){
       setFormData({
         ...formData,
-        gender: e.target.value,
+       gender: e.target.value,
       });
     }
 
@@ -149,7 +150,13 @@ export default function CreateListing() {
         }),
       });
       const data = await res.json();
+      console.log("API Response:", data); // Debugging step
       setLoading(false);
+
+      // if (!data || !data._id) {
+      //   setError("Listing creation failed. Please try again.");
+      //   return;
+      // }
       if (data.success === false){
         setError(data.message);
       }
@@ -233,6 +240,8 @@ export default function CreateListing() {
             type="number"
             placeholder="Price ($)"
             className="border p-3 rounded-lg flex-1 shadow-sm focus:ring-2 focus:ring-blue-400"
+            min='50'
+            max='1000'
             id="price"
             required
             onChange={handleChange}
