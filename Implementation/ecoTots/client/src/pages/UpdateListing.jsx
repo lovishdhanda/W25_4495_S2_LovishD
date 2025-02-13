@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   getDownloadURL,
   getStorage,
@@ -7,11 +7,12 @@ import {
 } from "firebase/storage";
 import { app } from "../firebase";
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function CreateListing() {
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  const params = useParams();
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
     imageUrls: [],
@@ -31,7 +32,21 @@ export default function CreateListing() {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   //console.log(files);
-  console.log(formData);
+//   console.log(formData);
+
+  useEffect(() => {
+    const fetchListing = async () => {
+        const listingId = params.listingId;
+        const res = await fetch(`/api/listing/get/${listingId}`);
+        const data = await res.json();
+        if(data.success ===false){
+            console.log(data.message);
+            return;
+        }
+        setFormData(data);
+    }
+    fetchListing();
+  }, []);
 
   const handleImageSubmit = (e) => {
     //e.prevent.default(); not inside the form
@@ -139,7 +154,7 @@ export default function CreateListing() {
         return setError('Discount price must be lower than regular price');
       setLoading(true);
       setError(false);
-      const res = await fetch('/api/listing/create', {
+      const res = await fetch(`/api/listing/update/${params.listingId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -171,7 +186,7 @@ export default function CreateListing() {
   return (
     <main className="p-6 max-w-3xl mx-auto bg-gradient-to-r from-pink-100 to-blue-100 shadow-lg rounded-lg">
       <h1 className="text-4xl font-bold text-center my-6 text-pink-700">
-        Sell Your Kids' Clothing
+        Update your Listing
       </h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         {/* Name */}
@@ -303,7 +318,7 @@ export default function CreateListing() {
               multiple
               className="w-full sm:w-auto border p-2 rounded-lg focus:ring-2 focus:ring-blue-400"
               id="images"
-              required
+              //required
             />
           </div>
           <button
@@ -355,7 +370,7 @@ export default function CreateListing() {
           type="submit"
           className="bg-gradient-to-r from-pink-400 to-yellow-300 text-white py-3 rounded-lg font-semibold hover:from-pink-500 hover:to-yellow-400 shadow-md transition duration-300"
         >
-          {loading ? 'Creating...' : 'Create Listing'}
+          {loading ? 'Creating...' : 'Update Listing'}
         </button>
         {error && <p className="text-red-700 text-sm">{error}</p>}
       </form>
