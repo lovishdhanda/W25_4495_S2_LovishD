@@ -4,6 +4,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore from 'swiper';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css/bundle';
+import {
+  FaMapMarkerAlt,
+  FaTshirt,
+  FaVenusMars,
+} from 'react-icons/fa';
 
 export default function Listing() {
     SwiperCore.use([Navigation]);
@@ -55,6 +60,26 @@ export default function Listing() {
                   </SwiperSlide>
                 ))}
               </Swiper>
+              <div>
+                <p className='text-slate-800'>
+                  <span className='font-semibold text-black'>
+                  Description - 
+                    </span>{ listing.description}
+                </p>
+
+                <ul className='flex font-semibold text-sm items-center gap-4 sn:gap-6'>
+                  <li className='flex items-center gap-1 whitespace-nowrap'>
+                    <FaVenusMars/>
+                    {listing.gender}
+                  </li>
+
+                  <li className='flex items-center gap-1 whitespace-nowrap'>
+                    <FaTshirt/>
+                    {listing.category}
+                  </li>
+
+                </ul>
+              </div>
             </div>
           )}
         </main>
