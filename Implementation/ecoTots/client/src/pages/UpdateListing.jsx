@@ -370,7 +370,7 @@ export default function CreateListing() {
           type="submit"
           className="bg-gradient-to-r from-pink-400 to-yellow-300 text-white py-3 rounded-lg font-semibold hover:from-pink-500 hover:to-yellow-400 shadow-md transition duration-300"
         >
-          {loading ? 'Creating...' : 'Update Listing'}
+          {loading ? 'Updating...' : 'Update Listing'}
         </button>
         {error && <p className="text-red-700 text-sm">{error}</p>}
       </form>

@@ -67,34 +67,63 @@ export const getListing = async (req,res , next) => {
   }
 }
 
-export const getListings = async (req, res, next) => {
-  try{
+// export const getListings = async (req, res, next) => {
+// //   try{
 
-    const limit = parseInt(req.query.limit) || 9;
-    const startIndex = parseInt(req.query.startIndex) || 0;
+// //     const limit = parseInt(req.query.limit) || 9;
+// //     const startIndex = parseInt(req.query.startIndex) || 0;
 
-    let gender = req.query.gender;
+// //     let gender = req.query.gender;
 
-    if (gender === undefined || type === 'all') {
-      gender = { $in: ['Boys', 'Girls', 'Unisex']};
+// //     if (gender === undefined || gender === 'all') {
+// //       gender = { $in: ['Boys', 'Girls', 'Unisex']};
+// //     }
+
+// //     const searchTerm = req.query.searchTerm || '';
+
+// //     const sort = req.query.sort || 'createdAt';
+
+// //     const order = req.query.order || 'desc';
+
+// //     const listings = await Listing.find({
+// //       name: { $regex: searchTerm, $options: 'i'},
+// //       gender,
+// //     }).sort(
+// //       {[sort]: order}
+// //     ).limit(limit).skip(startIndex);
+
+// //     return res.status(200).json(listings);
+
+// //   } catch (error) {
+// //     next(error);
+// //   }
+// // };
+export const getListings = async (req, res) => {
+  try {
+    const { searchTerm, type, gender, sort = "created_at", order = "desc" } = req.query;
+    
+    let query = {};
+
+    if (searchTerm) {
+      query.name = { $regex: searchTerm, $options: "i" }; // Case-insensitive search
     }
 
-    const searchTerm = req.query.searchTerm || '';
+    if (type && type !== "all") {
+      query.condition = type.charAt(0).toUpperCase() + type.slice(1); // Match "New" or "Used"
+    }
 
-    const sort = req.query.sort || 'createdAt';
+    if (gender && gender !== "all") {
+      query.gender = gender;
+    }
 
-    const order = req.query.order || 'desc';
+    const listings = await Listing.find(query).sort({ [sort]: order === "desc" ? -1 : 1 });
 
-    const listings = await Listing.find({
-      name: { $regex: searchTerm, $options: 'i'},
-      gender,
-    }).sort(
-      {[sort]: order}
-    ).limit(limit).skip(startIndex);
+    if (listings.length === 0) {
+      return res.status(404).json({ message: "No listings found!" });
+    }
 
-    return res.status(200).json(listings);
-
+    res.json(listings);
   } catch (error) {
-    next(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
