@@ -1,9 +1,9 @@
 import express from 'express';
-import { sendChatMessage } from '../controllers/chatbot.controller.js';  // Ensure the path is correct
+import { sendChatMessage } from '../controllers/chatbot.controller.js'; // Ensure this path is correct
 
 const router = express.Router();
 
-// Route to handle the chatbot message sending
+// Handle POST request for sending chat messages
 router.post('/send', sendChatMessage);
 
 export default router;
