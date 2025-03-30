@@ -1,81 +1,59 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const ChatbotPage = () => {
+const Chatbot = () => {
   const [message, setMessage] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const sendMessage = async () => {
-    if (!message.trim()) return; // Prevent empty messages
-
+    if (!message.trim()) return;
     setLoading(true);
-
-    // Add the user's message to the chat history
     setChatHistory([...chatHistory, { sender: 'user', message }]);
 
     try {
-      // Send the message to the backend API for data-driven response
-      const response = await axios.post('http://localhost:3000/api/chatbot/send', {
-        message: message,
-      });
-
-      // Add the bot's response to the chat history
-      setChatHistory([
-        ...chatHistory,
-        { sender: 'user', message },
-        { sender: 'bot', message: response.data.reply },
-      ]);
+      const response = await axios.post('http://localhost:3000/api/chatbot/send', { message });
+      setChatHistory([...chatHistory, { sender: 'user', message }, { sender: 'bot', message: response.data.reply }]);
     } catch (error) {
-      console.error("Error sending message:", error);
-
-      // Handling error response
-      setChatHistory([
-        ...chatHistory,
-        { sender: 'user', message },
-        { sender: 'bot', message: error.response ? error.response.data.error : "Sorry, I couldn't process your request." },
-      ]);
+      setChatHistory([...chatHistory, { sender: 'user', message }, { sender: 'bot', message: "Sorry, I couldn't process your request." }]);
     } finally {
       setLoading(false);
       setMessage('');
     }
   };
 
+
+  
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-96">
-        <div className="h-80 overflow-y-auto mb-4 p-2 border border-gray-200 rounded-lg">
-          {chatHistory.map((entry, index) => (
-            <div
-              key={index}
-              className={`my-2 p-3 rounded-lg ${entry.sender === 'user' ? 'bg-blue-100 text-right' : 'bg-gray-100'}`}
-            >
-              <span>{entry.message}</span>
-            </div>
-          ))}
-        </div>
-
-        {loading && <div className="text-center text-gray-500">Typing...</div>}
-
-        <div className="flex items-center gap-2">
-          <input
-            type="text"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Type your message..."
-            className="flex-grow p-3 border border-gray-300 rounded-lg"
-          />
-          <button
-            onClick={sendMessage}
-            disabled={loading}
-            className="px-6 py-3 bg-blue-500 text-white rounded-lg disabled:bg-gray-300"
-          >
-            Send
-          </button>
-        </div>
+    <section className="mt-1 text-center bg-gray-100 py-6 rounded-lg">
+      <h2 className="text-2xl font-semibold text-slate-700">Chat with Us</h2>
+      <p className="text-gray-500 mt-2">Have questions? Get instant help from our AI assistant.</p>
+      <div className="h-60 overflow-y-auto bg-white p-3 mt-3 border border-gray-300 rounded-lg text-left">
+        {chatHistory.map((entry, index) => (
+          <div key={index} className={`my-1 p-2 rounded-lg ${entry.sender === 'user' ? 'bg-blue-100 text-right' : 'bg-gray-200'}`}>
+            {entry.message}
+          </div>
+        ))}
       </div>
-    </div>
+      {loading && <p className="text-gray-500 mt-2">Typing...</p>}
+      <div className="flex justify-center mt-3">
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Type your message..."
+          className="border p-3 rounded-lg w-2/3"
+        />
+        <button
+          onClick={sendMessage}
+          disabled={loading}
+          className="bg-blue-600 text-white px-6 py-3 rounded-lg ml-2 hover:bg-blue-700"
+        >
+          Send
+        </button>
+      </div>
+    </section>
   );
 };
 
-export default ChatbotPage; // This line ensures it has a default export.
+export default Chatbot;
