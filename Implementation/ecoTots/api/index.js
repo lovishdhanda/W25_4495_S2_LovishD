@@ -6,7 +6,7 @@ import authRouter from './routes/auth.route.js';
 import listingRouter from './routes/listing.route.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import chatbotRouter from './routes/chatbot.route.js';
+import chatbotRouter from './routes/chatbot.route.js'; // Make sure this import is correct
 
 dotenv.config();
 
@@ -35,7 +35,7 @@ app.use(cookieParser()); // Parse cookies in the request
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/listing', listingRouter);
-app.use('/api/chatbot', chatbotRouter); // This should map to /api/chatbot/send
+app.use('/api/chatbot', chatbotRouter); // Chatbot route for handling /send and /history
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -49,5 +49,5 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}!`);
-  console.log("Ensure Ollama is running: 'ollama serve'");
+  console.log("Ensure Ollama is running: 'ollama serve'"); // Reminder for Ollama service
 });

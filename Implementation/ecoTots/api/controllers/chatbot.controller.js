@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Chatbot from '../models/chatbot.model.js'; // Make sure the path is correct
 
 export const sendChatMessage = async (req, res) => {
   const { message } = req.body;
@@ -8,9 +9,9 @@ export const sendChatMessage = async (req, res) => {
   }
 
   try {
-    // Call Ollama API
+    // Call Ollama API for chatbot response
     const response = await axios.post('http://localhost:11434/api/generate', {
-      model: 'mistral:latest',  // Use the model available (from curl)
+      model: 'mistral:latest',  // Ensure the correct model name
       prompt: message,
       stream: false,
     });
@@ -18,6 +19,15 @@ export const sendChatMessage = async (req, res) => {
     // Extract the response from Ollama
     const botReply = response.data.response.trim();
 
+    // Save the message and bot reply in the database
+    const chatMessage = new Chatbot({
+      message: message,
+      response: botReply,
+    });
+
+    await chatMessage.save(); // Save the chat message to MongoDB
+
+    // Respond with the bot's reply
     res.status(200).json({ success: true, reply: botReply });
   } catch (error) {
     console.error("Error in sendChatMessage:", error.message);
