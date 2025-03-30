@@ -39,6 +39,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation, Autoplay } from "swiper/modules";
+import ChatbotPage from "./ChatbotPage";
 
 export default function Home() {
   const [boysListings, setBoysListings] = useState([]);
@@ -175,7 +176,7 @@ export default function Home() {
         </Swiper>
       </section>
 
-      {/* Newsletter Subscription */}
+      {/* Newsletter Subscription
       <section className="mt-16 text-center bg-gray-100 py-10 rounded-lg">
         <h2 className="text-2xl font-semibold text-slate-700">Stay Updated</h2>
         <p className="text-gray-500 mt-2">Subscribe to get the latest deals and updates.</p>
@@ -189,7 +190,16 @@ export default function Home() {
             Subscribe
           </button>
         </div>
+      </section> */}
+
+          {/* Chatbot Integration*/}
+      <section className="mt-1 text-center bg-gray-100 rounded-lg">
+        <div className="flex justify-center mt-4">
+          <ChatbotPage />
+          
+        </div>
       </section>
+
     </div>
   );
 }
