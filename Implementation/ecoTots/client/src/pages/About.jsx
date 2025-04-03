@@ -2,38 +2,39 @@ import React from 'react';
 
 export default function About() {
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-6 sm:px-12">
-      <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-center text-indigo-600 mb-6">About Our Project</h1>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-200 py-16 px-6 sm:px-12">
+      <div className="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-300">
+        <h1 className="text-4xl font-extrabold text-center text-blue-600 mb-6">About Our Project</h1>
         
-        <p className="text-lg text-gray-700 mb-4">
-          Welcome to our online marketplace for gently used children's clothing! This platform aims to make it easier for parents and guardians to buy and sell kids' clothing at affordable prices. Our goal is to create a vibrant, safe, and welcoming space for the community to exchange items that are still in great condition, reducing waste while supporting others in need.
+        <p className="text-lg text-gray-800 leading-relaxed mb-6">
+          Welcome to our online marketplace for gently used children's clothing! This platform is designed to help parents and guardians buy and sell kids' clothing at affordable prices. By facilitating the exchange of quality pre-loved items, we aim to reduce waste and support families in need.
         </p>
         
-        <p className="text-lg text-gray-700 mb-4">
-          We are thrilled to introduce our project, which was made possible by the hard work and dedication of our talented team:
+        <p className="text-lg text-gray-800 leading-relaxed mb-6">
+          Our project is a testament to teamwork, dedication, and a shared passion for sustainability. Meet the people who made it possible:
         </p>
         
-        <div className="text-lg text-gray-800 font-semibold mb-4">
-          <h2 className="text-xl font-bold">Our Team</h2>
+        {/* Team Section */}
+        <div className="bg-gray-100 p-6 rounded-xl shadow-md">
+          <h2 className="text-2xl font-bold text-gray-700 mb-4">Our Team</h2>
           
-          <p className="mt-2">
-            <strong>Lovish</strong> - Team Lead
-          </p>
-          <p className="mt-2">
-            As the team lead, Lovish oversaw the entire project, ensuring smooth development, timely completion, and alignment with our mission. Their leadership helped keep the project focused and delivered successfully.
-          </p>
-          
-          <p className="mt-4">
-            <strong>Gurkanwal</strong> - Team Member
-          </p>
-          <p className="mt-2">
-            Gurkanwal contributed significantly to the technical development of the project, working on the platform's core functionality, including the integration of Firebase, image uploading, and creating a seamless user experience.
-          </p>
+          <div className="mb-6">
+            <h3 className="text-xl font-semibold text-blue-500">Lovish - Team Lead</h3>
+            <p className="text-gray-700 mt-2">
+              As the team lead, Lovish provided vision and direction, ensuring smooth development, timely execution, and a seamless final product. Their leadership played a crucial role in keeping the project on track.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-blue-500">Gurkanwal - Developer</h3>
+            <p className="text-gray-700 mt-2">
+              Gurkanwal contributed extensively to the technical aspects, working on platform functionality, Firebase integration, image uploads, and refining the user experience.
+            </p>
+          </div>
         </div>
 
-        <p className="text-lg text-gray-700 mb-4">
-          We're incredibly proud of what we've accomplished, and we look forward to seeing this platform grow and continue helping families find affordable clothing for their children.
+        <p className="text-lg text-gray-800 leading-relaxed mt-6">
+          We are incredibly proud of our progress and look forward to expanding this platform to help even more families find high-quality, affordable clothing for their little ones.
         </p>
       </div>
     </div>
