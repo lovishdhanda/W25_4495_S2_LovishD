@@ -6,7 +6,7 @@ import authRouter from './routes/auth.route.js';
 import listingRouter from './routes/listing.route.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import chatbotRouter from './routes/chatbot.route.js'; // Make sure this import is correct
+import chatbotRouter from './routes/chatbot.route.js'; // Import chatbot routes
 
 dotenv.config();
 
@@ -32,9 +32,9 @@ app.use(express.json()); // Parse incoming JSON
 app.use(cookieParser()); // Parse cookies in the request
 
 // API Routes
-app.use('/api/user', userRouter);
-app.use('/api/auth', authRouter);
-app.use('/api/listing', listingRouter);
+app.use('/api/user', userRouter);       // User routes
+app.use('/api/auth', authRouter);       // Authentication routes
+app.use('/api/listing', listingRouter); // Listing routes
 app.use('/api/chatbot', chatbotRouter); // Chatbot route for handling /send and /history
 
 // Error handling middleware
