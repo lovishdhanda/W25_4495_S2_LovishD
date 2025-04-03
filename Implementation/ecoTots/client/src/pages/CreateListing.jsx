@@ -30,15 +30,12 @@ export default function CreateListing() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
-  //console.log(files);
-  console.log(formData);
-
+  
   const handleImageSubmit = (e) => {
-    //e.prevent.default(); not inside the form
     if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
       setUploading(true);
       setImageUploadError(false);
-      const promises = []; //more than one asynchrompous behaviour
+      const promises = [];
 
       for (let i = 0; i < files.length; i++) {
         promises.push(storeImage(files[i]));
@@ -73,7 +70,6 @@ export default function CreateListing() {
         (snapshot) => {
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log(`Upload is ${progress}% done`);
         },
         (error) => {
           reject(error);
@@ -87,13 +83,6 @@ export default function CreateListing() {
     });
   };
 
-  // const handleRemoveImage = (index) => {
-  //   setFormData({
-  //     ...formData,
-  //     imageUrls: formData.imageUrls.filter((_, i) => i !== index),
-  //   })
-  // }
-
   const handleRemoveImage = (index) => {
     setFormData((prev) => ({
       ...prev,
@@ -101,24 +90,13 @@ export default function CreateListing() {
     }));
   };
 
-  //fetching the inputs
   const handleChange = (e) => {
-
-    if (e.target.id === 'gender'){
+    if (e.target.id === 'gender' || e.target.id === 'condition') {
       setFormData({
         ...formData,
-       gender: e.target.value,
+        [e.target.id]: e.target.value,
       });
-    }
-
-    if (e.target.id === 'condition'){
-      setFormData({
-        ...formData,
-        condition: e.target.value,
-      });
-    }
-
-    if (
+    } else if (
       e.target.type === 'number' ||
       e.target.type === 'text' ||
       e.target.type === 'textarea'
@@ -132,7 +110,7 @@ export default function CreateListing() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
+    try {
       if (formData.imageUrls.length < 1)
         return setError('You must upload at least one image');
       if (+formData.price < +formData.discountedPrice)
@@ -150,18 +128,12 @@ export default function CreateListing() {
         }),
       });
       const data = await res.json();
-      console.log("API Response:", data); // Debugging step
       setLoading(false);
 
-      // if (!data || !data._id) {
-      //   setError("Listing creation failed. Please try again.");
-      //   return;
-      // }
       if (data.success === false){
         setError(data.message);
       }
       navigate(`/listing/${data._id}`);
-
     } catch (error) {
       setError(error.message);
       setLoading(false);
@@ -169,7 +141,7 @@ export default function CreateListing() {
   }
 
   return (
-    <main className="p-6 max-w-3xl mx-auto bg-gradient-to-r from-pink-100 to-blue-100 shadow-lg rounded-lg">
+    <main className="p-6 max-w-3xl mx-auto bg-gradient-to-r from-pink-100 to-yellow-100 shadow-lg rounded-lg">
       <h1 className="text-4xl font-bold text-center my-6 text-pink-700">
         Sell Your Kids' Clothing
       </h1>
@@ -206,7 +178,7 @@ export default function CreateListing() {
             id="category"
             required
             onChange={handleChange}
-          value={formData.category}
+            value={formData.category}
           />
           <input
             type="text"
@@ -215,7 +187,7 @@ export default function CreateListing() {
             id="size"
             required
             onChange={handleChange}
-          value={formData.size}
+            value={formData.size}
           />
         </div>
 
@@ -290,6 +262,7 @@ export default function CreateListing() {
           <option value="New">New</option>
           <option value="Used">Used</option>
         </select>
+
         {/* Image Upload */}
         <div className="border p-4 rounded-lg bg-pink-50 shadow-sm gap-4 flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col sm:flex-row sm:gap-4">
@@ -316,14 +289,8 @@ export default function CreateListing() {
           </button>
         </div>
         <p className="text-red-700">{imageUploadError && imageUploadError}</p>
-        {/* {
-          formData.imageUrls.length > 0 && formData.imageUrls.map((url) => (
-            <div className="flex justify-between p-3 border items-center">
-              <img src={url} alt="listing image" className="w-20 h-20 object-contain rounded-lg" />
-              <button className="p-3 text-red-700 rounded-lg uppercase hover:opacity-75">Delete</button>
-            </div>
-          ))
-        } */}
+
+        {/* Image Previews */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           {formData.imageUrls.length > 0 &&
             formData.imageUrls.map((url, index) => (
@@ -331,14 +298,11 @@ export default function CreateListing() {
                 key={url}
                 className="relative group bg-white border shadow-md rounded-lg overflow-hidden"
               >
-                {/* Image */}
                 <img
                   src={url}
                   alt="Listing"
                   className="w-full h-32 object-cover"
                 />
-
-                {/* Delete Button (Shows on Hover) */}
                 <button
                   type="button"
                   onClick={() => handleRemoveImage(index)}
@@ -351,7 +315,8 @@ export default function CreateListing() {
         </div>
 
         {/* Submit Button */}
-        <button disabled={ loading || uploading}
+        <button
+          disabled={loading || uploading}
           type="submit"
           className="bg-gradient-to-r from-pink-400 to-yellow-300 text-white py-3 rounded-lg font-semibold hover:from-pink-500 hover:to-yellow-400 shadow-md transition duration-300"
         >
