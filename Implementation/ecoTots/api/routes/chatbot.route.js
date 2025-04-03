@@ -1,6 +1,6 @@
 import express from 'express';
-import { sendChatMessage } from '../controllers/chatbot.controller.js'; // Ensure this path is correct
-import ChatbotResponse from '../models/chatbot.model.js'; // Import the chatbot model
+import { sendChatMessage } from '../controllers/chatbot.controller.js'; // Ensure correct path
+import Chatbot from '../models/chatbot.model.js'; // Import the Chatbot model
 
 const router = express.Router();
 
@@ -10,7 +10,7 @@ router.post('/send', sendChatMessage);
 // Example of an additional route for retrieving previous chat history
 router.get('/history', async (req, res) => {
   try {
-    const chatHistory = await ChatbotResponse.find().sort({ createdAt: -1 }); // Sort by most recent
+    const chatHistory = await Chatbot.find().sort({ createdAt: -1 }); // Sort by most recent
     res.status(200).json({ success: true, history: chatHistory });
   } catch (error) {
     console.error("Error fetching chat history:", error);
