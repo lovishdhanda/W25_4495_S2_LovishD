@@ -32,10 +32,10 @@ export const sendChatMessage = async (req, res) => {
 
     if (matchingListings.length > 0) {
       const productList = matchingListings.map(item => {
-        return `🧸 **${item.name}** (${item.brand || 'No brand'})\n💲 Price: $${item.discountedPrice || item.price}\n📦 Condition: ${item.condition}\n👕 Size: ${item.size.join(", ")}`;
+        return `🧸 ${item.name} (${item.brand || 'No brand'})\n💲 Price: $${item.discountedPrice || item.price}\n📦 Condition: ${item.condition}\n👕 Size: ${item.size.join(", ")}`;
       }).join('\n\n');
 
-      const responseText = `Yes! We found the following items matching your query:\n\n${productList}`;
+      const responseText = `Yes! We found the following items matching your search:\n\n${productList}`;
 
       await new Chatbot({ message, response: responseText }).save();
 
